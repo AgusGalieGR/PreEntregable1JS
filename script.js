@@ -39,25 +39,22 @@ const addElement = () =>{
 }
 
 const estandar = (x) =>{
-    if(x !=null){
+    if(x!=null){
         x.toLowerCase(); 
         x[0].toUpperCase();
     }
 }
 
 const deleteElement = ()=> {
-    const buscar = prompt("Ingrese el nombre del manga a eliminar")
+    const buscar = prompt("Ingrese el nombre del manga a eliminar");
     estandar(buscar);
+    console.log(buscar);
     let encontre = false;
     let i = 0;
-    while(encontre==false){
+    while(encontre==false && i<catalogo.length){
         if(buscar == catalogo[i].nombre){
-            catalogo[i] = null;
-            i++;
+            catalogo.splice(i,1);
             encontre = true;
-            for(j=i; j<catalogo.length;j++){
-                catalogo[j-1]==catalogo[j];
-            }
             alert("El manga solicitado se ha eliminado correctamente")
         }else{
             i++;
