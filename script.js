@@ -23,14 +23,19 @@ const addElement = () =>{
         existencias: existencias,
         precio: precio
     }
-    let pusheado = false;
+    /*let pusheado = false;
     let i = 0;
     while(!pusheado){
         if(catalogo[i]==null){
             catalogo[i]=mangaNuevo;
         }
-        pusheado = true;
+        pusheado = true; 
+        
     }
+    if(!pusheado){
+        catalogo.push(mangaNuevo);
+    }*/
+    catalogo.push(mangaNuevo);
 }
 
 const estandar = (x) =>{
