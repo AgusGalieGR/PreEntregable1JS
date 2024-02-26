@@ -20,6 +20,7 @@ function mostrarCatalogo(){
         <h4>Precio:${manga.precio}</h4>
         <button>Comprar</button>
         `;
+        
         contenidoCatalogo.append(content);  
         catalogoVisible.push(content);
     });
