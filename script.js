@@ -1,7 +1,7 @@
 
 const Jigo1 = {nombre: 'JIGOKURAKU 1', editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500, img:"./Images/jigokuraku011.webp"};
 const Dandadan1 = {nombre: 'DANDADAN 1', editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500, img:"./Images/dandadan011.webp"};
-const VinlandSaga1 = {nombre: 'VINLAND SAGA 1', editorial:'OVNI', demografia:'SEINEN', existencias:50, precio:1000, img:"./Images/Vinland_Saga1.webp"};
+const VinlandSaga1 = {nombre: 'VINLAND SAGA 1', editorial:'OVNI', demografia:'SEINEN', existencias:50, precio:1000, img:"./Images/vinland_saga1.webp"};
 const NANA1 = {nombre: 'NANA', editorial:'IVREA', demografia:'SHOJO', existencias:50, precio:2000, img:"./Images/Nana1.webp"};
 const catalogo = [Jigo1,Dandadan1,VinlandSaga1,NANA1];
 let catalogoVisible = [];
