@@ -1,6 +1,6 @@
 
-const Jigo1 = {nombre: 'Jigokuraku', volumen:1, editorial:'IVREA', demografia:'shonen', existencias:20, precio:500};
-const Dandadan1 = {nombre: 'Dandadan', volumen:1,editorial:'IVREA', demografia:'shonen', existencias:20, precio:500};
+const Jigo1 = {nombre: 'JIGOKURAKU', volumen:1, editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500};
+const Dandadan1 = {nombre: 'DANDADAN', volumen:1,editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500};
 const catalogo = [Jigo1,Dandadan1];
 let catalogoVisible = [];
 const contenidoCatalogo = document.getElementById("cajaProductos");
@@ -8,20 +8,17 @@ const contenidoCatalogo = document.getElementById("cajaProductos");
 const addElement = () =>{
 
     const nombre = prompt("Ingresar nombre del manga");
-    estandar(nombre);
     const editorial = prompt("Ingresar nombre de la editorial");
-    estandar(editorial);
     const demografia = prompt("Ingresar demografia");
-    estandar(demografia);
     const existencias= prompt("Ingresar existencias");
     const precio = prompt("Ingresar precio");
 
     const mangaNuevo = {
-        nombre: nombre,
-        editorial: editorial,
-        demografia: demografia,
+        nombre: nombre.toUpperCase(),
+        editorial: editorial.toUpperCase(),
+        demografia: demografia.toUpperCase(),
         existencias: existencias,
-        precio: precio
+        precio: precio 
     }
     /*let pusheado = false;
     let i = 0;
@@ -38,16 +35,10 @@ const addElement = () =>{
     catalogo.push(mangaNuevo);
 }
 
-const estandar = (x) =>{
-    if(x!=null){
-        x.toLowerCase(); 
-        x[0].toUpperCase();
-    }
-}
 
-const deleteElement = ()=> {
+const deleteElement = () =>{
     const buscar = prompt("Ingrese el nombre del manga a eliminar");
-    estandar(buscar);
+    buscar.toUpperCase();
     console.log(buscar);
     let encontre = false;
     let i = 0;
@@ -69,4 +60,28 @@ const deleteElement = ()=> {
         deleteElement();
     }
 }
+function mostrarProductosSeinen(){
+    let cant = 0;
+    catalogo.forEach((manga) => {
+        if(manga.demografia=='seinen'){
+            const content = document.createElement("div");
+            content.innerHTML = `   
+            <img src="${manga.img}">
+            <h3>${manga.nombre}</h3>
+            <h4>Demografia:${manga.demografia}</h4>
+            <h3>Editorial:${manga.editorial}</h4>
+            <h5>Existencias:${manga.existencias}</h5>
+            <h4>Precio:${manga.precio}</h4>
+            <button>Comprar</button>
+            `;
+            contenidoCatalogo.append(content);  
+            cant++;
+        };
+    });
+    if(cant==0){
+        alert("No hay ningun producto disponible");
+    }
+}
 console.log(catalogo);
+let palabraPrueba = catalogo[1].nombre.toLowerCase();
+console.log(palabraPrueba[0].toUpperCase());
