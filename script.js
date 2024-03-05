@@ -137,7 +137,7 @@ function crearCardDemografias(manga,cant){
             <h5>Demografia:${manga.demografia}</h4>
             <h6>Editorial:${manga.editorial}</h4>
             <h4>Precio:${manga.precio}</h4>
-            <button class="agregarProducto">Comprar</button>
+            <button id="${manga.id}" class="agregarProducto">Comprar</button>
             `;
             contenidoCatalogo.append(content);  
             cant++;
@@ -163,7 +163,6 @@ function crearCard(manga){
 let cartProductosActivo = [];
 let cartProductosNuevo = [];
 function agregarProductosCarritoInicial(){
-    
     if(carritoActivo==false){
         cartProductosNuevo.forEach(producto => {
             const fila = document.createElement("tr");
@@ -198,8 +197,6 @@ function agregarProductosCarritoInicial(){
     calcularValor();
 }
 function agregarProductosCarrito(){
-    alert("entrando");
-    console.log(cartProductosActivo.length<cartProductosNuevo.length)
     if(cartProductosActivo.length<cartProductosNuevo.length){
             for(i=cartProductosActivo.length-1;i<cartProductosNuevo.length-1;i++){
                 let producto = cartProductosNuevo[i];
