@@ -1,28 +1,19 @@
 
-const Jigo1 = {nombre: 'JIGOKURAKU 1', editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500, img:"./Images/jigokuraku011.webp"};
-const Dandadan1 = {nombre: 'DANDADAN 1', editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500, img:"./Images/dandadan011.webp"};
-const VinlandSaga1 = {nombre: 'VINLAND SAGA 1', editorial:'OVNI', demografia:'SEINEN', existencias:50, precio:1000, img:"./Images/vinland_saga1.webp"};
-const NANA1 = {nombre: 'NANA', editorial:'IVREA', demografia:'SHOJO', existencias:50, precio:2000, img:"./Images/Nana1.webp"};
+const Jigo1 = {id: 1, nombre: 'JIGOKURAKU 1', editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500, img:"./Images/jigokuraku011.webp"};
+const Dandadan1 = {id: 2, nombre: 'DANDADAN 1', editorial:'IVREA', demografia:'SHONEN', existencias:20, precio:500, img:"./Images/dandadan011.webp"};
+const VinlandSaga1 = {id: 3,nombre: 'VINLAND SAGA 1', editorial:'OVNI', demografia:'SEINEN', existencias:50, precio:1000, img:"./Images/vinland_saga1.webp"};
+const NANA1 = {id: 4, nombre: 'NANA', editorial:'IVREA', demografia:'SHOJO', existencias:50, precio:2000, img:"./Images/Nana1.webp"};
 const catalogo = [Jigo1,Dandadan1,VinlandSaga1,NANA1];
-let catalogoVisible = [];
+const catalogoVisible = [];
 const contenidoCatalogo = document.getElementById("cajaProductos");
-clean();
-function mostrarCatalogo(){
+const carrito = document.getElementById("carrito");
+let carritoActivo = false;
+let valorCompra = 0;
+function mostrarCatalogo(){ 
+        clean();
         catalogo.forEach((manga) => {
-        const content = document.createElement("div");
-        content.className+= "tarjeta";
-        content.innerHTML = `  
-        <img src="${manga.img}"> 
-        <h3>${manga.nombre}</h3>
-        <h4>Demografia:${manga.demografia}</h4>
-        <h3>Editorial:${manga.editorial}</h4>
-        <h5>Existencias:${manga.existencias}</h5>
-        <h4>Precio:${manga.precio}</h4>
-        <button>Comprar</button>
-        `;
-        
-        contenidoCatalogo.append(content);  
-        catalogoVisible.push(content);
+        crearCard(manga);
+        addToCardButton();
     });
 }
 const addElement = () =>{
@@ -40,18 +31,6 @@ const addElement = () =>{
         existencias: existencias,
         precio: precio 
     }
-    /*let pusheado = false;
-    let i = 0;
-    while(!pusheado){
-        if(catalogo[i]==null){
-            catalogo[i]=mangaNuevo;
-        }
-        pusheado = true; 
-        
-    }
-    if(!pusheado){
-        catalogo.push(mangaNuevo);
-    }*/
     catalogo.push(mangaNuevo);
 }
 
@@ -85,21 +64,9 @@ function mostrarProductosShonen(){
     clean();
     catalogo.forEach((manga) => {
         if(manga.demografia=='SHONEN'){
-            const content = document.createElement("div");
-            content.className+= "tarjeta";
-            content.innerHTML = `
-            <img src="${manga.img}">   
-            <h3>${manga.nombre}</h3>
-            <h4>Demografia:${manga.demografia}</h4>
-            <h3>Editorial:${manga.editorial}</h4>
-            <h5>Existencias:${manga.existencias}</h5>
-            <h4>Precio:${manga.precio}</h4>
-            <button>Comprar</button>
-            `;
-            contenidoCatalogo.append(content);  
-            cant++;
-            catalogoVisible.push(content);
+            cant = crearCardDemografias(manga,cant);
         };
+        addToCardButton();
     });
     if(cant==0){
         alert("No hay ningun producto disponible");
@@ -114,23 +81,12 @@ function clean(){
 function mostrarProductosSeinen(){
     let cant = 0;
     clean();
+    console.log(catalogo);
     catalogo.forEach((manga) => {
         if(manga.demografia=='SEINEN'){
-            const content = document.createElement("div");
-            content.className+= "tarjeta";
-            content.innerHTML = `  
-            <img src="${manga.img}"> 
-            <h3>${manga.nombre}</h3>
-            <h4>Demografia:${manga.demografia}</h4>
-            <h3>Editorial:${manga.editorial}</h4>
-            <h5>Existencias:${manga.existencias}</h5>
-            <h4>Precio:${manga.precio}</h4>
-            <button>Comprar</button>
-            `;
-            contenidoCatalogo.append(content);  
-            cant++;
-            catalogoVisible.push(content);
+            cant = crearCardDemografias(manga,cant);
         };
+        addToCardButton();
     });
     if(cant==0){
         alert("No hay ningun producto disponible");
@@ -142,30 +98,23 @@ function mostrarProductosShojo(){
     clean();
     catalogo.forEach((manga) => {
         if(manga.demografia=='SHOJO'){
-            const content = document.createElement("div");
-            content.className+= "tarjeta";
-            content.innerHTML = `   
-            <img src="${manga.img}">
-            <h3>${manga.nombre}</h3>
-            <h4>Demografia:${manga.demografia}</h4>
-            <h3>Editorial:${manga.editorial}</h4>
-            <h5>Existencias:${manga.existencias}</h5>
-            <h4>Precio:${manga.precio}</h4>
-            <button>Comprar</button>
-            `;
-            contenidoCatalogo.append(content);  
-            cant++;
-            catalogoVisible.push(content);
+            cant = crearCardDemografias(manga,cant);
         };
+        addToCardButton();
     });
     if(cant==0){
         alert("No hay ningun producto disponible");
         mostrarCatalogo();
     }
 }
+const form = document.getElementById("form");
+
+form.addEventListener("submit", function(event){
+    event.preventDefault();
+    buscador();
+});
 function buscador() {
     clean();
-    let encontrado = false;
     var buscar = document.getElementById("inputSearch").value;
     console.log(buscar);
     manga = catalogo.find(mangaBuscado => {
@@ -173,23 +122,142 @@ function buscador() {
 
     if(manga!=null){
         encontrado = true;
-        const content = document.createElement("div");
-        content.className+= "tarjeta";
-        content.innerHTML = `   
-        <img src="${manga.img}">
-        <h3>${manga.nombre}</h3>
-        <h4>Demografia:${manga.demografia}</h4>
-        <h3>Editorial:${manga.editorial}</h4>
-        <h5>Existencias:${manga.existencias}</h5>
-        <h4>Precio:${manga.precio}</h4>
-        <div><button>Comprar</button></div>
-        `;
-        contenidoCatalogo.append(content);  
-        catalogoVisible.push(content);
+        crearCard(manga);
     }else{
         alert("El producto solicitado no esta disponible");
         mostrarCatalogo();
     }
 }
+function crearCardDemografias(manga,cant){
+    const content = document.createElement("div");
+            content.className+= "tarjeta";
+            content.innerHTML = `   
+            <img src="${manga.img}">
+            <h3>${manga.nombre}</h3>
+            <h5>Demografia:${manga.demografia}</h4>
+            <h6>Editorial:${manga.editorial}</h4>
+            <h4>Precio:${manga.precio}</h4>
+            <button class="agregarProducto">Comprar</button>
+            `;
+            contenidoCatalogo.append(content);  
+            cant++;
+            catalogoVisible.push(content);
+            console.log(catalogoVisible);
+            return cant;
+}
+function crearCard(manga){
+    const content = document.createElement("div");
+        content.className+= "tarjeta";
+        content.innerHTML = `   
+        <img src="${manga.img}">
+        <h3>${manga.nombre}</h3>
+        <h5>Demografia:${manga.demografia}</h4>
+        <h6>Editorial:${manga.editorial}</h4>
+        <h4>Precio:${manga.precio}</h4>
+        <button id="${manga.id}" class="agregarProducto">Comprar</button>
+        `;
+        contenidoCatalogo.append(content);  
+        catalogoVisible.push(content);
 
-console.log(catalogoVisible);
+}
+let cartProductosActivo = [];
+let cartProductosNuevo = [];
+function agregarProductosCarritoInicial(){
+    
+    if(carritoActivo==false){
+        cartProductosNuevo.forEach(producto => {
+            const fila = document.createElement("tr");
+                fila.innerHTML = `
+                <td>
+                    ${producto.id}
+                </td>
+                <td>
+                    ${producto.nombre}
+                </td>
+                <td>
+                    ${producto.demografia}
+                </td>
+                <td>
+                    ${producto.editorial}
+                </td>
+                <td>
+                    ${producto.precio}
+                </td>
+                <td>
+                    <button onclick= eliminarItem()>Eliminar producto</button>
+                </td>
+                `
+                carrito.appendChild(fila);
+
+        })
+    carritoActivo = true;
+    }else{
+        agregarProductosCarrito();
+    }
+    cartProductosActivo = cartProductosNuevo.slice();
+    calcularValor();
+}
+function agregarProductosCarrito(){
+    alert("entrando");
+    console.log(cartProductosActivo.length<cartProductosNuevo.length)
+    if(cartProductosActivo.length<cartProductosNuevo.length){
+            for(i=cartProductosActivo.length-1;i<cartProductosNuevo.length-1;i++){
+                let producto = cartProductosNuevo[i];
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                <td>
+                    ${producto.id}
+                </td>
+                <td>
+                    ${producto.nombre}
+                </td>
+                <td>
+                    ${producto.demografia}
+                </td>
+                <td>
+                    ${producto.editorial}
+                </td>
+                <td>
+                    ${producto.precio}
+                </td>
+                `
+                carrito.appendChild(fila);
+            }
+        }
+        calcularValor();
+}
+function addToCardButton(){
+    addButton = document.querySelectorAll(".agregarProducto");
+    addButton.forEach(button => {
+        button.onclick = (e) => {
+            const productId = e.currentTarget.id;
+            const selectedProduct = catalogo.find(producto => producto.id == productId);
+            cartProductosNuevo.push(selectedProduct);
+            localStorage.setItem("cartProductos",JSON.stringify(cartProductosNuevo))
+    };
+})
+}
+function cleanCarrito(){
+    cartProductosActivo.forEach((producto) => {
+        
+    })
+    cartProductosActivo = [];
+    localStorage.clear();
+    carritoActivo = false;
+}
+function calcularValor(){
+    cartProductosActivo.forEach(producto =>{
+        valorCompra = valorCompra + producto.precio;
+        
+    })
+    document.getElementById("valor").innerHTML = valorCompra;
+}
+function finalizarCompra(){
+    if(valorCompra>0){
+        alert("Su pedido ha sido tomado con exito, gracias por su compra!");
+        location.href ="index.html";
+        localStorage.clear();
+    }else{
+        alert("No se ha ingresado ningun producto!")
+    }
+}

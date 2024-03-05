@@ -31,23 +31,40 @@
                 <li><hr class="dropdown-divider"></li>
               </ul>
             </li>
-            <a class="d-flex justify-content-end" href="./carrito.html">
-              <img src="./Images/3144456.png" class="carrito">
-            </a>
           </ul>
-          <form class="d-flex" role="search">
+          <form id="form" class="d-flex justify-content-end" role="search">
             <input id="inputSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button id="btn "class="btn btn-outline-success" type="submit" onclick=buscador()>Search</button>
+            <button id="btnBuscador" class="btn btn-outline-success" type="submit">Search</button>
           </form>
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="d-flex justify-content-some nav-link" href="#carrito" onclick=agregarProductosCarritoInicial()>
+                <img src="./Images/3144456.png" class="carrito">
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
   </header>
   <h1 class="titulo">CATALOGO</h1>
   <div id="cajaProductos"></div>
+  <br></br>
   <footer>
     <!--<button class="modificar" onclick=addElement()>Añadir manga</button>
     <button class="modificar" onclick=deleteElement()>Eliminar manga</button>-->
+  <h2 class="titulo">CARRITO</h2>
+    <table id="carrito">
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Demografia</th>
+        <th>Editorial</th>
+        <th>Precio</th>
+        <th><button onclick=cleanCarrito()>Limpiar</button></th>
+      </tr>
+    </table>
+    <span><h3 class="valor">Total:</h3><h2 id="valor" class="valor"></h2><button class="finalizarCompra" onclick=finalizarCompra()>Finalizar compra</button></span>
   </footer>
   <script src="./script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>  
