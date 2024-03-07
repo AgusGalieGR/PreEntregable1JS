@@ -5,6 +5,7 @@ const VinlandSaga1 = {id: 3,nombre: 'VINLAND SAGA 1', editorial:'OVNI', demograf
 const NANA1 = {id: 4, nombre: 'NANA', editorial:'IVREA', demografia:'SHOJO', existencias:50, precio:2000, img:"./Images/Nana1.webp"};
 const catalogo = [Jigo1,Dandadan1,VinlandSaga1,NANA1];
 const catalogoVisible = [];
+let carritoActual = [];
 const contenidoCatalogo = document.getElementById("cajaProductos");
 const carrito = document.getElementById("carrito");
 let carritoActivo = false;
@@ -15,6 +16,24 @@ function mostrarCatalogo(){
         crearCard(manga);
         addToCardButton();
     });
+}
+function mostrarCarrito(){
+    let carritoAMostrar = JSON.parse(localStorage.getItem("cartProductos"));
+    console.log(carritoActual);
+    console.log(carritoAMostrar);
+    carritoAMostrar.forEach(prod =>{
+     carritoActual.push(prod);
+     localStorage.setItem("cartProductos",JSON.stringify(carritoActual))
+     if(carritoActivo==false){
+         agregarProductosCarritoInicial(prod);
+     }else{
+         agregarProductosCarrito(prod);
+     }
+    })
+ }
+window.onload = function renderProductos(){
+    mostrarCatalogo();
+    mostrarCarrito();
 }
 const addElement = () =>{
 
@@ -33,8 +52,6 @@ const addElement = () =>{
     }
     catalogo.push(mangaNuevo);
 }
-
-
 const deleteElement = () =>{
     const buscar = prompt("Ingrese el nombre del manga a eliminar");
     buscar.toUpperCase();
@@ -59,7 +76,8 @@ const deleteElement = () =>{
         deleteElement();
     }
 }
-function mostrarProductosShonen(){
+let shonen = document.getElementById("shonen");
+shonen.addEventListener("click", function mostrarProductosShonen(){
     let cant = 0;
     clean();
     catalogo.forEach((manga) => {
@@ -72,13 +90,15 @@ function mostrarProductosShonen(){
         alert("No hay ningun producto disponible");
         mostrarCatalogo();
     }
-}
+});
+
 function clean(){
     catalogoVisible.forEach((mangaV)=>{
         mangaV.remove();
     })
 }
-function mostrarProductosSeinen(){
+let seinen = document.getElementById("seinen");
+seinen.addEventListener("click", function mostrarProductosSeinen(){
     let cant = 0;
     clean();
     console.log(catalogo);
@@ -92,8 +112,10 @@ function mostrarProductosSeinen(){
         alert("No hay ningun producto disponible");
         mostrarCatalogo();
     }
-}
-function mostrarProductosShojo(){
+});
+
+let shojo = document.getElementById("shojo");
+shojo.addEventListener("click", function mostrarProductosShojo(){
     let cant = 0;
     clean();
     catalogo.forEach((manga) => {
@@ -106,9 +128,10 @@ function mostrarProductosShojo(){
         alert("No hay ningun producto disponible");
         mostrarCatalogo();
     }
-}
-const form = document.getElementById("form");
+});
 
+
+const form = document.getElementById("form");
 form.addEventListener("submit", function(event){
     event.preventDefault();
     buscador();
@@ -160,68 +183,92 @@ function crearCard(manga){
         catalogoVisible.push(content);
 
 }
-let cartProductosActivo = [];
-let cartProductosNuevo = [];
-function agregarProductosCarritoInicial(){
+function agregarProductosCarritoInicial(producto){
     if(carritoActivo==false){
-        cartProductosNuevo.forEach(producto => {
-            const fila = document.createElement("tr");
-                fila.innerHTML = `
-                <td>
-                    ${producto.id}
-                </td>
-                <td>
-                    ${producto.nombre}
-                </td>
-                <td>
-                    ${producto.demografia}
-                </td>
-                <td>
-                    ${producto.editorial}
-                </td>
-                <td>
-                    ${producto.precio}
-                </td>
-                <td>
-                    <button onclick= eliminarItem()>Eliminar producto</button>
-                </td>
-                `
-                carrito.appendChild(fila);
+        let filaAtributos = document.createElement("tr");
+        let fila = document.createElement("tr");
+        fila.classList.add("filaProducto");
+        filaAtributos.innerHTML= `
+        <th>
+            Id
+        </th>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Demografia
+        </th>
+        <th>
+            Editorial
+        </th>
+        <th >
+            Cantidad
+        </th>
+        <th>
+            Precio
+        </th>
+        <th>
+            <button onclick=cleanCarrito()>Limpiar</button>
+        </th>
+        `
+        fila.innerHTML = `
+        <td>
+            ${producto.id}
+        </td>
+        <td>
+            ${producto.nombre}
+        </td>
+        <td>
+            ${producto.demografia}
+        </td>
+        <td>
+            ${producto.editorial}
+        </td>
+        <td id ="cantidad">
+            ${cant = 1}
+        </td>
+        <td>
+            ${producto.precio}
+        </td>
+        <td>
+            <button onclick=eliminarItem() class="eliminarItem">Eliminar producto</button>
+        </td>
+        `
+        carrito.appendChild(filaAtributos);
+        carrito.appendChild(fila);
 
-        })
-    carritoActivo = true;
-    }else{
-        agregarProductosCarrito();
     }
-    cartProductosActivo = cartProductosNuevo.slice();
-    calcularValor();
+    carritoActivo = true;
+    calcularValor(producto);
 }
-function agregarProductosCarrito(){
-    if(cartProductosActivo.length<cartProductosNuevo.length){
-            for(i=cartProductosActivo.length-1;i<cartProductosNuevo.length-1;i++){
-                let producto = cartProductosNuevo[i];
-                const fila = document.createElement("tr");
-                fila.innerHTML = `
-                <td>
-                    ${producto.id}
-                </td>
-                <td>
-                    ${producto.nombre}
-                </td>
-                <td>
-                    ${producto.demografia}
-                </td>
-                <td>
-                    ${producto.editorial}
-                </td>
-                <td>
-                    ${producto.precio}
-                </td>
-                `
-                carrito.appendChild(fila);
-            }
-        }
-        calcularValor();
+function agregarProductosCarrito(producto){
+        const fila = document.createElement("tr");
+        fila.classList.add("filaProducto");
+        fila.innerHTML = `
+        <td id="idProducto">
+            ${producto.id}
+        </td>
+        <td>
+            ${producto.nombre}
+        </td>
+        <td>
+            ${producto.demografia}
+        </td>
+        <td>
+            ${producto.editorial}
+        </td>
+        <td id ="cantidad">
+            ${cant = 1}
+        </td>
+        <td>
+            ${producto.precio}
+        </td>
+        <td>
+            <button onclick=eliminarItem() class="eliminarItem">Eliminar producto</button>
+        </td>
+        `
+        carrito.appendChild(fila);
+        calcularValor(producto);
 }
 function addToCardButton(){
     addButton = document.querySelectorAll(".agregarProducto");
@@ -229,27 +276,62 @@ function addToCardButton(){
         button.onclick = (e) => {
             const productId = e.currentTarget.id;
             const selectedProduct = catalogo.find(producto => producto.id == productId);
-            cartProductosNuevo.push(selectedProduct);
-            localStorage.setItem("cartProductos",JSON.stringify(cartProductosNuevo))
+            carritoActual.push(selectedProduct);
+            localStorage.setItem("cartProductos",JSON.stringify(carritoActual))
+            if(carritoActivo==false){
+                agregarProductosCarritoInicial(selectedProduct);
+            }else{
+                agregarProductosCarrito(selectedProduct);
+            }
     };
-})
+    })
+    
+}
+function agregarUnidad(producto){
+    console.log(carrito.hasChildNodes());
+    var filas = carrito.childNodes;
+    console.log(filas);
+    var encontrado = false;
+    var idActual;
+    var cantidadMod;
+    filas.forEach(fila => {
+        while(encontrado == false){
+            idActual = fila.getElementById("idProducto");
+            if(idActual==producto.id){
+                encontrado=true;
+                cantidadMod = fila.getElementById("cantidad");
+                cantidadMod.innerHTML = cant++;
+            }
+        }   
+    })
 }
 function cleanCarrito(){
-    cartProductosActivo.forEach((producto) => {
-        
-    })
-    cartProductosActivo = [];
     localStorage.clear();
-    carritoActivo = false;
-}
-function calcularValor(){
-    cartProductosActivo.forEach(producto =>{
-        valorCompra = valorCompra + producto.precio;
-        
+    var filas = carrito.childNodes;
+    console.log()
+    filas.forEach(fila => {
+        fila.innerText=` `;
     })
+    carritoActivo = false;
+    carritoActual = [];
+    valorCompra = 0;
     document.getElementById("valor").innerHTML = valorCompra;
 }
-function finalizarCompra(){
+function eliminarItem(){
+    deleteButton = document.querySelectorAll(".eliminarItem");
+    deleteButton.forEach(button => {
+        button.onclick = (e) => {
+        const productId = e.currentTarget.id;
+        let carritoActual = carritoActual.filter(carritoId => carritoId!==productId);
+        }
+    })
+}
+function calcularValor(producto){
+    valorCompra = valorCompra + producto.precio;
+    document.getElementById("valor").innerHTML = valorCompra;
+}
+let finalizar = document.getElementById("finalizar");
+finalizar.addEventListener("click", function finalizarCompra(){
     if(valorCompra>0){
         alert("Su pedido ha sido tomado con exito, gracias por su compra!");
         location.href ="index.html";
@@ -257,4 +339,4 @@ function finalizarCompra(){
     }else{
         alert("No se ha ingresado ningun producto!")
     }
-}
+})
