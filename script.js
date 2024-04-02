@@ -19,7 +19,6 @@ function mostrarCatalogo(){
 }
 function mostrarCarrito(){
     let carritoAMostrar = JSON.parse(localStorage.getItem("cartProductos"));
-    console.log(carritoActual);
     console.log(carritoAMostrar);
     carritoAMostrar.forEach(prod =>{
      carritoActual.push(prod);
@@ -242,6 +241,9 @@ function agregarProductosCarritoInicial(producto){
     calcularValor(producto);
 }
 function agregarProductosCarrito(producto){
+    if(carritoActual.find(producto)!=null){
+        let cantidadAModificar = document.getElementById
+    }else{
         const fila = document.createElement("tr");
         fila.classList.add("filaProducto");
         fila.innerHTML = `
@@ -268,6 +270,7 @@ function agregarProductosCarrito(producto){
         </td>
         `
         carrito.appendChild(fila);
+    }
         calcularValor(producto);
 }
 function addToCardButton(){
@@ -340,3 +343,4 @@ finalizar.addEventListener("click", function finalizarCompra(){
         alert("No se ha ingresado ningun producto!")
     }
 })
+const nCantidad = Object.values(carritoActual).reduce((acc, cantidad),0);
